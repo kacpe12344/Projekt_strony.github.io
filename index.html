@@ -36,25 +36,11 @@
                 <label for="dzielnica">Dzielnica:</label>
                 <select id="dzielnica">
                     <option value="wszystkie">Wszystkie</option>
-                    <option value="Bemowo">Bemowo</option>
-                    <option value="Białołęka">Białołęka</option>
-                    <option value="Bielany">Bielany</option>
-                    <option value="Mokotów">Mokotów</option>
-                    <option value="Ochota">Ochota</option>
-                    <option value="Praga-Południe">Praga-Południe</option>
-                    <option value="Praga-Północ">Praga-Północ</option>
-                    <option value="Rembertów">Rembertów</option>
-                    <option value="Śródmieście">Śródmieście</option>
-                    <option value="Targówek">Targówek</option>
-                    <option value="Ursus">Ursus</option>
-                    <option value="Ursynow">Ursynów</option>
-                    <option value="Wawer">Wawer</option>
-                    <option value="Wesoła">Wesoła</option>
-                    <option value="Wilanów">Wilanów</option>
-                    <option value="Włochy">Włochy</option>
-                    <option value="Wola">Wola</option>
-                    <option value="Żoliborz">Żoliborz</option>
-
+                    <option value="srodmiescie">Śródmieście</option>
+                    <option value="mokotow">Mokotów</option>
+                    <option value="wola">Wola</option>
+                    <option value="praga">Praga</option>
+                    <option value="ursynow">Ursynów</option>
                 </select>
             </div>
             
@@ -73,13 +59,57 @@
 
     <script>
         const boiska = [
-            { id: 1, nazwa: 'Boisko Sportowa 1', typ: 'kryte', nawierzchnia: 'parkiet', dzielnica: 'Śródmieście', dostepne: true, zarezerwowane: [] },
-            { id: 2, nazwa: 'Orlik Mokotów', typ: 'otwarte', nawierzchnia: 'orlik', dzielnica: 'Mokotów', dostepne: true, zarezerwowane: [] },
-            { id: 3, nazwa: 'Arena Wola', typ: 'kryte', nawierzchnia: 'sztuczna', dzielnica: 'Wola', dostepne: true, zarezerwowane: [] },
-            { id: 4, nazwa: 'Stadion Praga', typ: 'otwarte', nawierzchnia: 'trawa', dzielnica: 'Praga-Południe', dostepne: true, zarezerwowane: [] },
-            { id: 5, nazwa: 'Hala Ursynów', typ: 'kryte', nawierzchnia: 'parkiet', dzielnica: 'Ursynow', dostepne: false, zarezerwowane: [] },
-            { id: 6, nazwa: 'Boisko Mokotów Park', typ: 'otwarte', nawierzchnia: 'sztuczna', dzielnica: 'Mokotów', dostepne: true, zarezerwowane: [] }
+            { id: 1, nazwa: 'Boisko Sportowa 1', typ: 'kryte', nawierzchnia: 'parkiet', dzielnica: 'srodmiescie', dostepne: true, zarezerwowane: [] },
+            { id: 2, nazwa: 'Orlik Mokotów', typ: 'otwarte', nawierzchnia: 'orlik', dzielnica: 'mokotow', dostepne: true, zarezerwowane: [] },
+            { id: 3, nazwa: 'Arena Wola', typ: 'kryte', nawierzchnia: 'sztuczna', dzielnica: 'wola', dostepne: true, zarezerwowane: [] },
+            { id: 4, nazwa: 'Stadion Praga', typ: 'otwarte', nawierzchnia: 'trawa', dzielnica: 'praga', dostepne: true, zarezerwowane: [] },
+            { id: 5, nazwa: 'Hala Ursynów', typ: 'kryte', nawierzchnia: 'parkiet', dzielnica: 'ursynow', dostepne: false, zarezerwowane: [] },
+            { id: 6, nazwa: 'Boisko Mokotów Park', typ: 'otwarte', nawierzchnia: 'sztuczna', dzielnica: 'mokotow', dostepne: true, zarezerwowane: [] }
         ];
+
+        // Sprawdzenie czy boisko jest dostępne w danym dniu
+        function sprawdzDostepnosc(boisko, data) {
+            const rezerwacjeNaDzien = boisko.zarezerwowane.filter(rez => rez.data === data);
+            
+            if (rezerwacjeNaDzien.length === 0) {
+                return true; // Brak rezerwacji = dostępne
+            }
+            
+            // Sortuj rezerwacje po godzinie rozpoczęcia
+            rezerwacjeNaDzien.sort((a, b) => {
+                const [hA, mA] = a.godzinaOd.split(':').map(Number);
+                const [hB, mB] = b.godzinaOd.split(':').map(Number);
+                return (hA * 60 + mA) - (hB * 60 + mB);
+            });
+            
+            // Sprawdź czy cały dzień (8:00-22:30) jest pokryty rezerwacjami
+            const godzinaOtwarcia = 8 * 60; // 8:00 = 480 minut
+            const godzinaZamkniecia = 22 * 60 + 30; // 22:30 = 1350 minut
+            
+            let aktualnyPunkt = godzinaOtwarcia;
+            
+            for (let rez of rezerwacjeNaDzien) {
+                const [hOd, mOd] = rez.godzinaOd.split(':').map(Number);
+                const [hDo, mDo] = rez.godzinaDo.split(':').map(Number);
+                const startRez = hOd * 60 + mOd;
+                const koniecRez = hDo * 60 + mDo;
+                
+                // Jeśli rezerwacja zaczyna się później niż aktualny punkt, jest luka
+                if (startRez > aktualnyPunkt) {
+                    return true; // Jest wolny czas
+                }
+                
+                // Przesuń aktualny punkt do końca tej rezerwacji
+                aktualnyPunkt = Math.max(aktualnyPunkt, koniecRez);
+            }
+            
+            // Jeśli dotarliśmy do końca dnia, cały dzień jest zarezerwowany
+            if (aktualnyPunkt >= godzinaZamkniecia) {
+                return false;
+            }
+            
+            return true; // Jest jeszcze czas po ostatniej rezerwacji
+        }
 
         // Generowanie godzin z odstępami co pół godziny
         function generujGodziny() {
@@ -103,9 +133,24 @@
                 const typOk = typFilter === 'wszystkie' || boisko.typ === typFilter;
                 const nawierzchniaOk = nawierzchniaFilter === 'wszystkie' || boisko.nawierzchnia === nawierzchniaFilter;
                 const dzielnicaOk = dzielnicaFilter === 'wszystkie' || boisko.dzielnica === dzielnicaFilter;
-                const dostepnoscOk = dostepnoscFilter === 'wszystkie' || 
-                    (dostepnoscFilter === 'dostepne' && boisko.dostepne) ||
-                    (dostepnoscFilter === 'niedostepne' && !boisko.dostepne);
+                
+                // Dla filtru dostępności - sprawdzamy czy jest JAKIKOLWIEK dzień dostępny w przyszłości
+                let dostepnoscOk = true;
+                if (dostepnoscFilter !== 'wszystkie') {
+                    const dzisiaj = new Date().toISOString().split('T')[0];
+                    const jutro = new Date();
+                    jutro.setDate(jutro.getDate() + 1);
+                    const dataJutro = jutro.toISOString().split('T')[0];
+                    
+                    const jestDostepnyDzisiaj = sprawdzDostepnosc(boisko, dzisiaj);
+                    const jestDostepnyJutro = sprawdzDostepnosc(boisko, dataJutro);
+                    
+                    if (dostepnoscFilter === 'dostepne') {
+                        dostepnoscOk = jestDostepnyDzisiaj || jestDostepnyJutro;
+                    } else {
+                        dostepnoscOk = !jestDostepnyDzisiaj && !jestDostepnyJutro;
+                    }
+                }
                 
                 return typOk && nawierzchniaOk && dzielnicaOk && dostepnoscOk;
             });
@@ -123,33 +168,51 @@
             filtrowane.forEach(boisko => {
                 const boiskoCard = document.createElement('div');
                 boiskoCard.className = 'boisko-card';
+                
+                // Sprawdź dostępność w ciągu najbliższych 7 dni
+                let maWolneTerminy = false;
+                const dzisiaj = new Date();
+                
+                for (let i = 0; i < 7; i++) {
+                    const dataSprawdzana = new Date(dzisiaj);
+                    dataSprawdzana.setDate(dataSprawdzana.getDate() + i);
+                    const dataStr = dataSprawdzana.toISOString().split('T')[0];
+                    
+                    if (sprawdzDostepnosc(boisko, dataStr)) {
+                        maWolneTerminy = true;
+                        break;
+                    }
+                }
+                
                 boiskoCard.innerHTML = `
                     <h3>${boisko.nazwa}</h3>
                     <div class="boisko-info">
                         <p><strong>Typ:</strong> ${boisko.typ}</p>
                         <p><strong>Nawierzchnia:</strong> ${boisko.nawierzchnia}</p>
                         <p><strong>Dzielnica:</strong> ${boisko.dzielnica}</p>
-                        <p class="${boisko.dostepne ? 'dostepne' : 'niedostepne'}">
-                            <strong>Status:</strong> ${boisko.dostepne ? 'Dostępne' : 'Niedostępne'}
+                        <p id="status-boiska-${boisko.id}" class="${maWolneTerminy ? 'dostepne' : 'niedostepne'}">
+                            <strong>Status:</strong> ${maWolneTerminy ? 'Dostępne' : 'Brak wolnych terminów'}
                         </p>
                     </div>
                     <div class="rezerwacja-section">
                         <label for="data-${boisko.id}">Wybierz datę:</label>
-                        <input type="date" id="data-${boisko.id}" class="data-input" min="${new Date().toISOString().split('T')[0]}" ${!boisko.dostepne ? 'disabled' : ''}>
+                        <input type="date" id="data-${boisko.id}" class="data-input" min="${new Date().toISOString().split('T')[0]}">
+                        
+                        <div id="status-dnia-${boisko.id}" class="status-dnia"></div>
                         
                         <label for="godzina-od-${boisko.id}">Godzina rozpoczęcia:</label>
-                        <select id="godzina-od-${boisko.id}" class="godzina-select godzina-od" ${!boisko.dostepne ? 'disabled' : ''}>
-                            <option value="">-- Wybierz godzinę --</option>
+                        <select id="godzina-od-${boisko.id}" class="godzina-select godzina-od" disabled>
+                            <option value="">-- Najpierw wybierz datę --</option>
                             ${godziny.map(g => `<option value="${g}">${g}</option>`).join('')}
                         </select>
                         
                         <label for="godzina-do-${boisko.id}">Godzina zakończenia:</label>
-                        <select id="godzina-do-${boisko.id}" class="godzina-select godzina-do" ${!boisko.dostepne ? 'disabled' : ''}>
-                            <option value="">-- Wybierz godzinę --</option>
+                        <select id="godzina-do-${boisko.id}" class="godzina-select godzina-do" disabled>
+                            <option value="">-- Najpierw wybierz datę --</option>
                             ${godziny.map(g => `<option value="${g}">${g}</option>`).join('')}
                         </select>
                         
-                        <button class="btn-rezerwuj" data-id="${boisko.id}" ${!boisko.dostepne ? 'disabled' : ''}>Zarezerwuj</button>
+                        <button class="btn-rezerwuj" data-id="${boisko.id}" disabled>Zarezerwuj</button>
                         <div id="form-${boisko.id}" class="kontakt-form hidden">
                             <input type="email" placeholder="Adres email" id="email-${boisko.id}" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,}$">
                             <small>Podaj poprawny adres email (np. email@domena.pl)</small>
@@ -163,6 +226,12 @@
                 listaBoisk.appendChild(boiskoCard);
                 
                 renderZarezerwowane(boisko);
+                
+                // Nasłuchuj zmiany daty
+                const dataInput = document.getElementById(`data-${boisko.id}`);
+                dataInput.addEventListener('change', function() {
+                    aktualizujStatusDnia(boisko.id, this.value);
+                });
             });
             
             attachEventListeners();
@@ -184,6 +253,96 @@
         function walidujTelefon(telefon) {
             const regex = /^[0-9]{8}$/;
             return regex.test(telefon);
+        }
+
+        function aktualizujStatusDnia(boiskoId, data) {
+            const boisko = boiska.find(b => b.id === parseInt(boiskoId));
+            const statusDiv = document.getElementById(`status-dnia-${boiskoId}`);
+            const godzinaOdSelect = document.getElementById(`godzina-od-${boiskoId}`);
+            const godzinaDoSelect = document.getElementById(`godzina-do-${boiskoId}`);
+            const btnRezerwuj = document.querySelector(`.btn-rezerwuj[data-id="${boiskoId}"]`);
+            
+            const czyDostepne = sprawdzDostepnosc(boisko, data);
+            
+            if (czyDostepne) {
+                statusDiv.innerHTML = '<p class="dostepne"><strong>✓ Boisko dostępne w tym dniu</strong></p>';
+                godzinaOdSelect.disabled = false;
+                godzinaDoSelect.disabled = false;
+                btnRezerwuj.disabled = false;
+                
+                // Wyłącz godziny które są już zarezerwowane
+                const rezerwacjeNaDzien = boisko.zarezerwowane.filter(rez => rez.data === data);
+                
+                Array.from(godzinaOdSelect.options).forEach(option => {
+                    if (option.value) {
+                        const [hOpcja, mOpcja] = option.value.split(':').map(Number);
+                        const minutyOpcja = hOpcja * 60 + mOpcja;
+                        
+                        // Sprawdź czy ta godzina jest w środku jakiejś rezerwacji
+                        let jestZarezerwowana = false;
+                        for (let rez of rezerwacjeNaDzien) {
+                            const [hOd, mOd] = rez.godzinaOd.split(':').map(Number);
+                            const [hDo, mDo] = rez.godzinaDo.split(':').map(Number);
+                            const startRez = hOd * 60 + mOd;
+                            const koniecRez = hDo * 60 + mDo;
+                            
+                            if (minutyOpcja >= startRez && minutyOpcja < koniecRez) {
+                                jestZarezerwowana = true;
+                                break;
+                            }
+                        }
+                        
+                        if (jestZarezerwowana) {
+                            option.disabled = true;
+                            option.style.color = '#ccc';
+                        } else {
+                            option.disabled = false;
+                            option.style.color = '';
+                        }
+                    }
+                });
+                
+            } else {
+                statusDiv.innerHTML = '<p class="niedostepne"><strong>✗ Brak wolnych terminów w tym dniu - wszystkie godziny zarezerwowane</strong></p>';
+                godzinaOdSelect.disabled = true;
+                godzinaDoSelect.disabled = true;
+                godzinaOdSelect.value = '';
+                godzinaDoSelect.value = '';
+                btnRezerwuj.disabled = true;
+            }
+            
+            // Aktualizuj status główny boiska
+            aktualizujStatusBoiska(boiskoId);
+        }
+        
+        function aktualizujStatusBoiska(boiskoId) {
+            const boisko = boiska.find(b => b.id === parseInt(boiskoId));
+            const statusElement = document.querySelector(`#status-boiska-${boiskoId}`);
+            
+            // Sprawdź czy boisko ma jakieś wolne terminy w ciągu najbliższych 7 dni
+            let maWolneTerminy = false;
+            const dzisiaj = new Date();
+            
+            for (let i = 0; i < 7; i++) {
+                const dataSprawdzana = new Date(dzisiaj);
+                dataSprawdzana.setDate(dataSprawdzana.getDate() + i);
+                const dataStr = dataSprawdzana.toISOString().split('T')[0];
+                
+                if (sprawdzDostepnosc(boisko, dataStr)) {
+                    maWolneTerminy = true;
+                    break;
+                }
+            }
+            
+            if (statusElement) {
+                if (maWolneTerminy) {
+                    statusElement.className = 'dostepne';
+                    statusElement.innerHTML = '<strong>Status:</strong> Dostępne';
+                } else {
+                    statusElement.className = 'niedostepne';
+                    statusElement.innerHTML = '<strong>Status:</strong> Brak wolnych terminów';
+                }
+            }
         }
 
         function attachEventListeners() {
@@ -249,6 +408,27 @@
                             });
                             
                             alert('Rezerwacja potwierdzona!');
+                            
+                            // Natychmiast sprawdź dostępność tego dnia po dodaniu rezerwacji
+                            const czyDostepnyPo = sprawdzDostepnosc(boisko, dataInput.value);
+                            
+                            if (!czyDostepnyPo) {
+                                // Jeśli dzień jest teraz całkowicie zarezerwowany, aktualizuj od razu
+                                const statusDiv = document.getElementById(`status-dnia-${id}`);
+                                const godzinaOdSelectUpd = document.getElementById(`godzina-od-${id}`);
+                                const godzinaDoSelectUpd = document.getElementById(`godzina-do-${id}`);
+                                const btnRezerwujUpd = document.querySelector(`.btn-rezerwuj[data-id="${id}"]`);
+                                const formUpd = document.getElementById(`form-${id}`);
+                                
+                                statusDiv.innerHTML = '<p class="niedostepne"><strong>✗ Brak wolnych terminów w tym dniu - wszystkie godziny zarezerwowane</strong></p>';
+                                godzinaOdSelectUpd.disabled = true;
+                                godzinaDoSelectUpd.disabled = true;
+                                godzinaOdSelectUpd.value = '';
+                                godzinaDoSelectUpd.value = '';
+                                btnRezerwujUpd.disabled = true;
+                                formUpd.classList.add('hidden');
+                            }
+                            
                             renderBoiska();
                         } else {
                             alert('Ten termin jest już zarezerwowany!');
@@ -265,22 +445,45 @@
                     const id = this.id.replace('godzina-od-', '');
                     const selectDo = document.getElementById(`godzina-do-${id}`);
                     const wybranaGodzina = this.value;
+                    const dataInput = document.getElementById(`data-${id}`);
+                    const boisko = boiska.find(b => b.id === parseInt(id));
                     
-                    if (wybranaGodzina) {
+                    if (wybranaGodzina && dataInput.value) {
                         const [h, m] = wybranaGodzina.split(':').map(Number);
                         const wybraneMinuty = h * 60 + m;
                         
-                        // Włącz wszystkie opcje
+                        const rezerwacjeNaDzien = boisko.zarezerwowane.filter(rez => rez.data === dataInput.value);
+                        
+                        // Znajdź najbliższą rezerwację po wybranej godzinie
+                        let najblizszaRezerwacja = null;
+                        for (let rez of rezerwacjeNaDzien) {
+                            const [hOd, mOd] = rez.godzinaOd.split(':').map(Number);
+                            const startRez = hOd * 60 + mOd;
+                            
+                            if (startRez > wybraneMinuty) {
+                                if (!najblizszaRezerwacja || startRez < najblizszaRezerwacja) {
+                                    najblizszaRezerwacja = startRez;
+                                }
+                            }
+                        }
+                        
+                        // Włącz wszystkie opcje i dostosuj do rezerwacji
                         Array.from(selectDo.options).forEach(option => {
                             if (option.value) {
                                 const [hOpcja, mOpcja] = option.value.split(':').map(Number);
                                 const minutyOpcja = hOpcja * 60 + mOpcja;
                                 
-                                // Wyłącz opcje wcześniejsze lub równe
+                                // Wyłącz opcje wcześniejsze lub równe wybranej godzinie
                                 if (minutyOpcja <= wybraneMinuty) {
                                     option.disabled = true;
                                     option.style.color = '#ccc';
-                                } else {
+                                } 
+                                // Wyłącz opcje po najbliższej rezerwacji
+                                else if (najblizszaRezerwacja && minutyOpcja > najblizszaRezerwacja) {
+                                    option.disabled = true;
+                                    option.style.color = '#ccc';
+                                }
+                                else {
                                     option.disabled = false;
                                     option.style.color = '';
                                 }
@@ -291,7 +494,7 @@
                         if (selectDo.value) {
                             const [hDo, mDo] = selectDo.value.split(':').map(Number);
                             const minutyDo = hDo * 60 + mDo;
-                            if (minutyDo <= wybraneMinuty) {
+                            if (minutyDo <= wybraneMinuty || (najblizszaRezerwacja && minutyDo > najblizszaRezerwacja)) {
                                 selectDo.value = '';
                             }
                         }
