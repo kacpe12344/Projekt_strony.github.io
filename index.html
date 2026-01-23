@@ -5,6 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Rezerwacja Boisk</title>
     <link rel="stylesheet" href="styles.css">
+    
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script type="text/javascript">
+       (function(){
+          // Twój Public Key
+          emailjs.init("NSaWlButIzsKk692_");
+       })();
+    </script>
 </head>
 <body>
     <div class="container">
@@ -54,7 +62,6 @@
                     <option value="Włochy">Włochy</option>
                     <option value="Wola">Wola</option>
                     <option value="Żoliborz">Żoliborz</option>
-
                 </select>
             </div>
             
@@ -86,19 +93,17 @@
             const rezerwacjeNaDzien = boisko.zarezerwowane.filter(rez => rez.data === data);
             
             if (rezerwacjeNaDzien.length === 0) {
-                return true; // Brak rezerwacji = dostępne
+                return true; 
             }
             
-            // Sortuj rezerwacje po godzinie rozpoczęcia
             rezerwacjeNaDzien.sort((a, b) => {
                 const [hA, mA] = a.godzinaOd.split(':').map(Number);
                 const [hB, mB] = b.godzinaOd.split(':').map(Number);
                 return (hA * 60 + mA) - (hB * 60 + mB);
             });
             
-            // Sprawdź czy cały dzień (8:00-22:30) jest pokryty rezerwacjami
-            const godzinaOtwarcia = 8 * 60; // 8:00 = 480 minut
-            const godzinaZamkniecia = 22 * 60 + 30; // 22:30 = 1350 minut
+            const godzinaOtwarcia = 8 * 60; 
+            const godzinaZamkniecia = 22 * 60 + 30; 
             
             let aktualnyPunkt = godzinaOtwarcia;
             
@@ -108,24 +113,18 @@
                 const startRez = hOd * 60 + mOd;
                 const koniecRez = hDo * 60 + mDo;
                 
-                // Jeśli rezerwacja zaczyna się później niż aktualny punkt, jest luka
                 if (startRez > aktualnyPunkt) {
-                    return true; // Jest wolny czas
+                    return true;
                 }
-                
-                // Przesuń aktualny punkt do końca tej rezerwacji
                 aktualnyPunkt = Math.max(aktualnyPunkt, koniecRez);
             }
             
-            // Jeśli dotarliśmy do końca dnia, cały dzień jest zarezerwowany
             if (aktualnyPunkt >= godzinaZamkniecia) {
                 return false;
             }
-            
-            return true; // Jest jeszcze czas po ostatniej rezerwacji
+            return true; 
         }
 
-        // Generowanie godzin z odstępami co pół godziny
         function generujGodziny() {
             const godziny = [];
             for (let h = 8; h <= 22; h++) {
@@ -148,7 +147,6 @@
                 const nawierzchniaOk = nawierzchniaFilter === 'wszystkie' || boisko.nawierzchnia === nawierzchniaFilter;
                 const dzielnicaOk = dzielnicaFilter === 'wszystkie' || boisko.dzielnica === dzielnicaFilter;
                 
-                // Dla filtru dostępności - sprawdzamy czy jest JAKIKOLWIEK dzień dostępny w przyszłości
                 let dostepnoscOk = true;
                 if (dostepnoscFilter !== 'wszystkie') {
                     const dzisiaj = new Date().toISOString().split('T')[0];
@@ -183,7 +181,6 @@
                 const boiskoCard = document.createElement('div');
                 boiskoCard.className = 'boisko-card';
                 
-                // Sprawdź dostępność w ciągu najbliższych 7 dni
                 let maWolneTerminy = false;
                 const dzisiaj = new Date();
                 
@@ -241,7 +238,6 @@
                 
                 renderZarezerwowane(boisko);
                 
-                // Nasłuchuj zmiany daty
                 const dataInput = document.getElementById(`data-${boisko.id}`);
                 dataInput.addEventListener('change', function() {
                     aktualizujStatusDnia(boisko.id, this.value);
@@ -284,7 +280,6 @@
                 godzinaDoSelect.disabled = false;
                 btnRezerwuj.disabled = false;
                 
-                // Wyłącz godziny które są już zarezerwowane
                 const rezerwacjeNaDzien = boisko.zarezerwowane.filter(rez => rez.data === data);
                 
                 Array.from(godzinaOdSelect.options).forEach(option => {
@@ -292,7 +287,6 @@
                         const [hOpcja, mOpcja] = option.value.split(':').map(Number);
                         const minutyOpcja = hOpcja * 60 + mOpcja;
                         
-                        // Sprawdź czy ta godzina jest w środku jakiejś rezerwacji
                         let jestZarezerwowana = false;
                         for (let rez of rezerwacjeNaDzien) {
                             const [hOd, mOd] = rez.godzinaOd.split(':').map(Number);
@@ -325,7 +319,6 @@
                 btnRezerwuj.disabled = true;
             }
             
-            // Aktualizuj status główny boiska
             aktualizujStatusBoiska(boiskoId);
         }
         
@@ -333,7 +326,6 @@
             const boisko = boiska.find(b => b.id === parseInt(boiskoId));
             const statusElement = document.querySelector(`#status-boiska-${boiskoId}`);
             
-            // Sprawdź czy boisko ma jakieś wolne terminy w ciągu najbliższych 7 dni
             let maWolneTerminy = false;
             const dzisiaj = new Date();
             
@@ -373,7 +365,6 @@
                         return;
                     }
                     
-                    // Sprawdzenie czy godzina zakończenia jest późniejsza niż rozpoczęcia
                     const [godzinaOdH, godzinaOdM] = godzinaOdSelect.value.split(':').map(Number);
                     const [godzinaDoH, godzinaDoM] = godzinaDoSelect.value.split(':').map(Number);
                     const minutyOd = godzinaOdH * 60 + godzinaOdM;
@@ -388,6 +379,7 @@
                 });
             });
             
+            // --- 2. ZMODYFIKOWANA OBSŁUGA PRZYCISKU Z WYSYŁANIEM MAILA ---
             document.querySelectorAll('.btn-potwierdz').forEach(btn => {
                 btn.addEventListener('click', function() {
                     const id = parseInt(this.dataset.id);
@@ -415,35 +407,42 @@
                         );
                         
                         if (!czyZarezerwowany) {
+                            // Zapisz lokalnie
                             boisko.zarezerwowane.push({
                                 data: dataInput.value,
                                 godzinaOd: godzinaOdSelect.value,
                                 godzinaDo: godzinaDoSelect.value
                             });
                             
-                            alert('Rezerwacja potwierdzona!');
-                            
-                            // Natychmiast sprawdź dostępność tego dnia po dodaniu rezerwacji
+                            // WYSYŁKA MAILA
+                            btn.innerText = "Wysyłanie...";
+                            btn.disabled = true;
+
+                            const parametryMaila = {
+                                email: emailInput.value,
+                                nazwa_boiska: boisko.nazwa,
+                                dzielnica: boisko.dzielnica,
+                                data_rezerwacji: dataInput.value,
+                                godzina_od: godzinaOdSelect.value,
+                                godzina_do: godzinaDoSelect.value
+                            };
+
+                            emailjs.send("service_seba", "template_7v4aiwu", parametryMaila)
+                                .then(function(response) {
+                                    alert('Rezerwacja potwierdzona! Sprawdź skrzynkę mailową.');
+                                    renderBoiska();
+                                }, function(error) {
+                                    alert('Rezerwacja przyjęta, ale wystąpił błąd przy wysyłaniu maila.');
+                                    console.log(error);
+                                    renderBoiska();
+                                });
+
+                            // Sprawdź czy dostępny po dodaniu
                             const czyDostepnyPo = sprawdzDostepnosc(boisko, dataInput.value);
-                            
                             if (!czyDostepnyPo) {
-                                // Jeśli dzień jest teraz całkowicie zarezerwowany, aktualizuj od razu
-                                const statusDiv = document.getElementById(`status-dnia-${id}`);
-                                const godzinaOdSelectUpd = document.getElementById(`godzina-od-${id}`);
-                                const godzinaDoSelectUpd = document.getElementById(`godzina-do-${id}`);
-                                const btnRezerwujUpd = document.querySelector(`.btn-rezerwuj[data-id="${id}"]`);
-                                const formUpd = document.getElementById(`form-${id}`);
-                                
-                                statusDiv.innerHTML = '<p class="niedostepne"><strong>✗ Brak wolnych terminów w tym dniu - wszystkie godziny zarezerwowane</strong></p>';
-                                godzinaOdSelectUpd.disabled = true;
-                                godzinaDoSelectUpd.disabled = true;
-                                godzinaOdSelectUpd.value = '';
-                                godzinaDoSelectUpd.value = '';
-                                btnRezerwujUpd.disabled = true;
-                                formUpd.classList.add('hidden');
+                                // Logika odświeżania zostanie załatwiona przez renderBoiska()
                             }
                             
-                            renderBoiska();
                         } else {
                             alert('Ten termin jest już zarezerwowany!');
                         }
@@ -452,8 +451,8 @@
                     }
                 });
             });
+            // -------------------------------------------------------------
             
-            // Dynamiczne aktualizowanie godzin zakończenia
             document.querySelectorAll('.godzina-od').forEach(selectOd => {
                 selectOd.addEventListener('change', function() {
                     const id = this.id.replace('godzina-od-', '');
@@ -468,7 +467,6 @@
                         
                         const rezerwacjeNaDzien = boisko.zarezerwowane.filter(rez => rez.data === dataInput.value);
                         
-                        // Znajdź najbliższą rezerwację po wybranej godzinie
                         let najblizszaRezerwacja = null;
                         for (let rez of rezerwacjeNaDzien) {
                             const [hOd, mOd] = rez.godzinaOd.split(':').map(Number);
@@ -481,18 +479,15 @@
                             }
                         }
                         
-                        // Włącz wszystkie opcje i dostosuj do rezerwacji
                         Array.from(selectDo.options).forEach(option => {
                             if (option.value) {
                                 const [hOpcja, mOpcja] = option.value.split(':').map(Number);
                                 const minutyOpcja = hOpcja * 60 + mOpcja;
                                 
-                                // Wyłącz opcje wcześniejsze lub równe wybranej godzinie
                                 if (minutyOpcja <= wybraneMinuty) {
                                     option.disabled = true;
                                     option.style.color = '#ccc';
                                 } 
-                                // Wyłącz opcje po najbliższej rezerwacji
                                 else if (najblizszaRezerwacja && minutyOpcja > najblizszaRezerwacja) {
                                     option.disabled = true;
                                     option.style.color = '#ccc';
@@ -504,7 +499,6 @@
                             }
                         });
                         
-                        // Jeśli wybrana godzina zakończenia jest niepoprawna, wyczyść ją
                         if (selectDo.value) {
                             const [hDo, mDo] = selectDo.value.split(':').map(Number);
                             const minutyDo = hDo * 60 + mDo;
@@ -516,7 +510,6 @@
                 });
             });
             
-            // Walidacja w czasie rzeczywistym dla emaila
             document.querySelectorAll('input[type="email"]').forEach(input => {
                 input.addEventListener('blur', function() {
                     if (this.value && !walidujEmail(this.value)) {
@@ -527,7 +520,6 @@
                 });
             });
             
-            // Walidacja w czasie rzeczywistym dla telefonu
             document.querySelectorAll('input[type="tel"]').forEach(input => {
                 input.addEventListener('input', function() {
                     this.value = this.value.replace(/[^0-9]/g, '');
