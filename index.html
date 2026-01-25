@@ -132,27 +132,49 @@
 
         //funkcje do google sheets
         async function pobierzRezerwacjeZSheets() {
-            try {
-                const response = await fetch(GOOGLE_SHEETS_URL);
-                const data = await response.json();
-                console.log('Pobrane dane z Sheets:', data);
-                alert('Pobrano rezerwacji: ' + data.length);
-                boiska.forEach(b => b.zarezerwowane = []);
-                data.forEach(rez => {
-                    const boisko = boiska.find(b => b.id === parseInt(rez.idBoiska));
-                    if (boisko) {
-                        boisko.zarezerwowane.push({
-                            data: rez.data,
-                            godzinaOd: rez.godzinaOd,
-                            godzinaDo: rez.godzinaDo
-                        });
-                    }
+    try {
+        const response = await fetch(GOOGLE_SHEETS_URL);
+        const data = await response.json();
+        
+        console.log('=== DEBUG REZERWACJI ===');
+        console.log('Pobrano z Sheets:', data.length);
+        console.log('Przykładowa rezerwacja:', data[0]);
+        
+        boiska.forEach(b => b.zarezerwowane = []);
+        
+        let dodano = 0;
+        data.forEach((rez, index) => {
+            console.log(`\nRezerwacja ${index}:`, rez);
+            
+            const boiskoId = parseInt(rez.idBoiska);
+            console.log('  ID boiska z Sheets:', rez.idBoiska, '-> parseInt:', boiskoId);
+            
+            const boisko = boiska.find(b => b.id === boiskoId);
+            console.log('  Znaleziono boisko?', !!boisko);
+            
+            if (boisko) {
+                console.log('  Dodaję do boiska:', boisko.nazwa);
+                boisko.zarezerwowane.push({
+                    data: rez.data,
+                    godzinaOd: rez.godzinaOd,
+                    godzinaDo: rez.godzinaDo
                 });
-                console.log('Rezerwacje załadowane:', data.length);
-            } catch (error) {
-                console.error('Błąd pobierania rezerwacji:', error);
+                dodano++;
+            } else {
+                console.warn('  ❌ NIE ZNALEZIONO boiska o ID:', boiskoId);
+                console.warn('  Dostępne IDs:', boiska.map(b => b.id));
             }
-        }
+        });
+        
+        console.log('\n=== PODSUMOWANIE ===');
+        console.log('Dodano rezerwacji:', dodano);
+        console.log('Boisko ID 1 rezerwacje:', boiska[0].zarezerwowane);
+        console.log('Boisko ID 2 rezerwacje:', boiska[1].zarezerwowane);
+        
+    } catch (error) {
+        console.error('❌ BŁĄD:', error);
+    }
+}
 
         async function zapiszRezerwacjeDoSheets(rezerwacja) {
             try {
