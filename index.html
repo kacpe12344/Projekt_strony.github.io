@@ -259,7 +259,7 @@
                         <div id="form-${boisko.id}" class="kontakt-form hidden">
                             <input type="email" placeholder="Adres email" id="email-${boisko.id}" required>
                             <small>Podaj poprawny adres email (np. email@domena.pl)</small>
-                            <input type="tel" placeholder="Numer telefonu (8 cyfr)" id="sms-${boisko.id}" required maxlength="8">
+                            <input type="tel" placeholder="Numer telefonu (9 cyfr)" id="sms-${boisko.id}" required maxlength="9">
                             <small>Podaj 8-cyfrowy numer telefonu (tylko cyfry)</small>
                             <button class="btn-potwierdz" data-id="${boisko.id}">Potwierdź rezerwację</button>
                         </div>
@@ -445,7 +445,7 @@
                     }
                     
                     if (!walidujTelefon(smsInput.value)) {
-                        alert('Numer telefonu musi składać się z dokładnie 8 cyfr');
+                        alert('Numer telefonu musi składać się z dokładnie 9 cyfr');
                         return;
                     }
                     
