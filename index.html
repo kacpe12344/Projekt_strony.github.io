@@ -135,6 +135,8 @@
             try {
                 const response = await fetch(GOOGLE_SHEETS_URL);
                 const data = await response.json();
+                console.log('Pobrane dane z Sheets:', data);
+                alert('Pobrano rezerwacji: ' + data.length);
                 boiska.forEach(b => b.zarezerwowane = []);
                 data.forEach(rez => {
                     const boisko = boiska.find(b => b.id === parseInt(rez.idBoiska));
