@@ -272,19 +272,36 @@
                 const dataInput = document.getElementById(`data-${boisko.id}`);
                 dataInput.addEventListener('change', function() {
                     aktualizujStatusDnia(boisko.id, this.value);
+                    renderZarezerwowane(boisko, this.value);
                 });
             });
             
             attachEventListeners();
         }
 
-        function renderZarezerwowane(boisko) {
-            const container = document.getElementById(`zarezerwowane-${boisko.id}`);
-            if (boisko.zarezerwowane.length > 0) {
-                container.innerHTML = '<h4>Zarezerwowane terminy:</h4>' + 
-                    boisko.zarezerwowane.map(rez => `<span class="data-zarezerwowana">${rez.data} ${rez.godzinaOd} - ${rez.godzinaDo}</span>`).join('');
-            }
-        }
+        function renderZarezerwowane(boisko, wybranaData = null) {
+    const container = document.getElementById(`zarezerwowane-${boisko.id}`);
+    
+    if (!wybranaData) {
+        container.innerHTML = '';
+        return;
+    }
+    
+    const rezerwacjeNaDzien = boisko.zarezerwowane.filter(rez => rez.data === wybranaData);
+    
+    if (rezerwacjeNaDzien.length > 0) {
+        rezerwacjeNaDzien.sort((a, b) => {
+            const [hA, mA] = a.godzinaOd.split(':').map(Number);
+            const [hB, mB] = b.godzinaOd.split(':').map(Number);
+            return (hA * 60 + mA) - (hB * 60 + mB);
+        });
+        
+        container.innerHTML = '<h4>Zajęte godziny w wybranym dniu:</h4>' + 
+            rezerwacjeNaDzien.map(rez => `<span class="data-zarezerwowana">${rez.godzinaOd} - ${rez.godzinaDo}</span>`).join('');
+    } else {
+        container.innerHTML = '<p class="brak-rezerwacji">Brak rezerwacji w tym dniu - wszystkie godziny dostępne!</p>';
+    }
+}
 
         function walidujEmail(email) {
             const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -296,7 +313,7 @@
             return regex.test(telefon);
         }
         
-        // KONTYNUACJA CZĘŚCI 2 - wklej to po funkcji walidujTelefon() w pierwszym pliku
+        
 
         function aktualizujStatusDnia(boiskoId, data) {
             const boisko = boiska.find(b => b.id === parseInt(boiskoId));

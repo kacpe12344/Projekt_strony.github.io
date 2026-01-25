@@ -272,3 +272,10 @@ h1 {
         width: 100%;
     }
 }
+
+
+.brak-rezerwacji {
+    color: #28a745;
+    font-style: italic;
+    margin-top: 10px;
+}
