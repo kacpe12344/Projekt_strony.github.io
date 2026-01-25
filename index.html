@@ -310,7 +310,7 @@
         }
 
         function walidujTelefon(telefon) {
-            const regex = /^[0-9]{10}$/;
+            const regex = /^[0-9]{9}$/;
             return regex.test(telefon);
         }
         
@@ -578,7 +578,7 @@
                 input.addEventListener('input', function() {
                     this.value = this.value.replace(/[^0-9]/g, '');
                     if (this.value.length > 8) {
-                        this.value = this.value.slice(0, 8);
+                        this.value = this.value.slice(0, 9);
                     }
                 });
                 
