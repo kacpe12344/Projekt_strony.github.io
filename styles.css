@@ -1,3 +1,17 @@
+:root {
+    --primary: #0ea5e9;
+    --primary-dark: #0284c7;
+    --bg-body: #f0f9ff;
+    --bg-card: #ffffff;
+    --text-main: #1e293b;
+    --text-secondary: #64748b;
+    --border: #e2e8f0;
+    --success: #10b981;
+    --error: #ef4444;
+    --radius: 12px;
+    --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -5,277 +19,371 @@
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    font-family: 'Inter', sans-serif;
+    background: var(--bg-body);
+    color: var(--text-main);
+    line-height: 1.5;
     min-height: 100vh;
-    padding: 20px;
-    color: #333;
+}
+
+.main-wrapper {
+    padding-bottom: 40px;
+}
+
+/* Header */
+header {
+    background: transparent;
+    padding: 40px 20px;
+    text-align: center;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+.logo-icon {
+    font-size: 2.5rem;
+    color: var(--text-main);
+}
+
+h1 {
+    font-weight: 700;
+    font-size: 2rem;
+    color: var(--text-main);
 }
 
 .container {
     max-width: 1200px;
     margin: 0 auto;
-    background: white;
-    border-radius: 20px;
-    padding: 40px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    padding: 0 20px;
 }
 
-h1 {
-    text-align: center;
-    color: #667eea;
-    margin-bottom: 40px;
-    font-size: 2.5em;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-}
-
+/* Filtry */
 .filters {
-    background: #f8f9fa;
-    padding: 25px;
-    border-radius: 15px;
+    background: var(--bg-card);
+    padding: 24px;
+    border-radius: var(--radius);
     margin-bottom: 30px;
-    border: 2px solid #e9ecef;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
 }
 
 .filters h2 {
-    color: #495057;
+    font-size: 1.25rem;
     margin-bottom: 20px;
-    font-size: 1.5em;
+    color: var(--text-main);
+}
+
+.filter-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
 }
 
 .filter-group {
-    margin-bottom: 15px;
     display: flex;
-    align-items: center;
-    gap: 10px;
+    flex-direction: column;
 }
 
-.filter-group label {
-    font-weight: 600;
-    color: #495057;
-    min-width: 120px;
+.filter-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    font-weight: 500;
 }
 
 .filter-group select {
-    flex: 1;
-    padding: 10px 15px;
-    border: 2px solid #dee2e6;
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
     border-radius: 8px;
-    font-size: 1em;
-    background: white;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.filter-group select:hover {
-    border-color: #667eea;
+    background-color: #fff;
+    font-family: inherit;
+    font-size: 0.95rem;
+    color: var(--text-main);
+    transition: all 0.2s;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 0.5rem center;
+    background-repeat: no-repeat;
+    background-size: 1.5em 1.5em;
+    padding-right: 2.5rem;
 }
 
 .filter-group select:focus {
     outline: none;
-    border-color: #667eea;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
 }
 
+/* Lista boisk */
 .boiska-lista {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-    gap: 25px;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 24px;
 }
 
 .boisko-card {
-    background: white;
-    border: 2px solid #e9ecef;
-    border-radius: 15px;
-    padding: 25px;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: flex;
+    flex-direction: column;
 }
 
 .boisko-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 15px rgba(102, 126, 234, 0.2);
-    border-color: #667eea;
+    transform: translateY(-4px);
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
 }
 
-.boisko-card h3 {
-    color: #667eea;
-    margin-bottom: 15px;
-    font-size: 1.4em;
-    border-bottom: 2px solid #e9ecef;
-    padding-bottom: 10px;
+/* Karta - Header */
+.card-header {
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    border-bottom: 1px solid var(--border);
 }
 
-.boisko-info p {
-    margin: 8px 0;
-    color: #495057;
+.card-title-section {
+    flex: 1;
 }
 
-.dostepne {
-    color: #28a745;
-    font-weight: 600;
-}
-
-.niedostepne {
-    color: #dc3545;
-    font-weight: 600;
-}
-
-.rezerwacja-section {
-    margin-top: 20px;
-    padding-top: 20px;
-    border-top: 2px solid #e9ecef;
-}
-
-.rezerwacja-section label {
-    display: block;
+.card-title-section h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
     margin-bottom: 8px;
+    color: var(--text-main);
+}
+
+.card-specs {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+}
+
+.status-pill {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 99px;
+    font-size: 0.8rem;
     font-weight: 600;
-    color: #495057;
 }
 
-.data-input, .godzina-select {
-    width: 100%;
-    padding: 10px;
-    border: 2px solid #dee2e6;
+.status-dostepne {
+    background-color: #dcfce7;
+    color: #166534;
+}
+
+.status-niedostepne {
+    background-color: #fee2e2;
+    color: #991b1b;
+}
+
+.card-image {
+    width: 80px;
+    height: 80px;
     border-radius: 8px;
-    font-size: 1em;
-    margin-bottom: 10px;
-    transition: all 0.3s ease;
-    background: white;
-    cursor: pointer;
+    overflow: hidden;
+    flex-shrink: 0;
 }
 
-.data-input:focus, .godzina-select:focus {
+.card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Karta - Akcje */
+.card-actions {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.input-group label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+}
+
+.input-with-icon {
+    position: relative;
+}
+
+.input-with-icon i {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-secondary);
+}
+
+.data-input, .godzina-select, .form-inputs input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+}
+
+.data-input {
+    padding-left: 36px;
+}
+
+.time-inputs {
+    display: flex;
+    gap: 12px;
+}
+
+.time-inputs .input-group {
+    flex: 1;
+}
+
+.data-input:focus, .godzina-select:focus, .form-inputs input:focus {
     outline: none;
-    border-color: #667eea;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
 }
 
-.data-input:disabled, .godzina-select:disabled {
-    background: #e9ecef;
+.godzina-select:disabled, .data-input:disabled {
+    background-color: #f1f5f9;
     cursor: not-allowed;
-}
-
-.godzina-select option:disabled {
-    color: #ccc;
-    background: #f8f9fa;
+    color: #94a3b8;
 }
 
 .btn-rezerwuj, .btn-potwierdz {
-    width: 100%;
-    padding: 12px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background-color: var(--primary);
     color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 1em;
     font-weight: 600;
+    padding: 12px;
+    border-radius: 8px;
+    border: none;
     cursor: pointer;
-    transition: all 0.3s ease;
-    margin-bottom: 10px;
+    transition: background-color 0.2s;
+    width: 100%;
+    margin-top: 5px;
 }
 
 .btn-rezerwuj:hover, .btn-potwierdz:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    background-color: var(--primary-dark);
 }
 
-.btn-rezerwuj:disabled, .btn-potwierdz:disabled {
-    background: #6c757d;
+.btn-rezerwuj:disabled {
+    background-color: #cbd5e1;
     cursor: not-allowed;
-    transform: none;
 }
 
+/* Formularz kontaktowy */
 .kontakt-form {
-    margin-top: 15px;
-    padding: 15px;
-    background: #f8f9fa;
-    border-radius: 8px;
+    padding: 15px 20px;
+    background-color: #f8fafc;
+    border-top: 1px solid var(--border);
 }
 
-.kontakt-form input {
-    width: 100%;
-    padding: 10px;
+.kontakt-form h4 {
+    font-size: 0.95rem;
+    margin-bottom: 12px;
+    color: var(--text-main);
+}
+
+.form-inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
     margin-bottom: 10px;
-    border: 2px solid #dee2e6;
-    border-radius: 8px;
-    font-size: 1em;
-    transition: all 0.3s ease;
-}
-
-.kontakt-form input:focus {
-    outline: none;
-    border-color: #667eea;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
 .hidden {
     display: none;
 }
 
+/* Status dnia i zajęte */
+.status-dnia-container {
+    min-height: 24px;
+}
+
+.status-msg {
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 500;
+}
+
+.status-msg.dostepne { color: var(--success); }
+.status-msg.niedostepne { color: var(--error); }
+
 .zarezerwowane-daty {
-    margin-top: 15px;
-    padding-top: 15px;
-    border-top: 2px solid #e9ecef;
+    padding: 15px 20px;
+    background-color: #fff;
+    border-top: 1px solid var(--border);
+    font-size: 0.85rem;
 }
 
-.zarezerwowane-daty h4 {
-    color: #495057;
-    margin-bottom: 10px;
-    font-size: 1em;
+.busy-times-label {
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+    font-weight: 500;
 }
 
-.data-zarezerwowana {
-    display: inline-block;
-    background: #6c757d;
-    color: white;
-    padding: 5px 12px;
-    border-radius: 5px;
-    margin: 3px;
-    font-size: 0.9em;
-    opacity: 0.7;
+.busy-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.tag-zajete {
+    background-color: #f1f5f9;
+    color: #64748b;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+}
+
+.brak-rezerwacji {
+    color: var(--success);
+    font-style: italic;
+    display: flex;
+    align-items: center;
+    gap: 6px;
 }
 
 .brak-wynikow {
+    grid-column: 1 / -1;
     text-align: center;
-    color: #6c757d;
-    font-size: 1.2em;
-    padding: 40px;
-    background: #f8f9fa;
-    border-radius: 10px;
+    padding: 60px;
+    color: var(--text-secondary);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.brak-wynikow i {
+    font-size: 3rem;
+    color: #cbd5e1;
 }
 
 @media (max-width: 768px) {
-    .container {
-        padding: 20px;
-    }
-    
-    h1 {
-        font-size: 1.8em;
-    }
-    
-    .boiska-lista {
-        grid-template-columns: 1fr;
-    }
-    
-    .filter-group {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-    
-    .filter-group label {
-        min-width: auto;
-    }
-    
-    .filter-group select {
-        width: 100%;
-    }
-}
-
-
-.brak-rezerwacji {
-    color: #28a745;
-    font-style: italic;
-    margin-top: 10px;
+    h1 { font-size: 1.5rem; }
+    .card-image { display: none; }
+    .boisko-card { margin-bottom: 10px; }
 }

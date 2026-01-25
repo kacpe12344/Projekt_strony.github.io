@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Rezerwacja Boisk</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
     
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
@@ -14,91 +16,126 @@
     </script>
 </head>
 <body>
-    <div class="container">
-        <h1>System Rezerwacji Boisk Sportowych</h1>
+    <div class="main-wrapper">
+        <header>
+            <div class="logo-container">
+                <i class="fa-regular fa-futbol logo-icon"></i>
+                <h1>Rezerwacja Boisk Warszawa</h1>
+            </div>
+        </header>
         
-        <div class="filters">
-            <h2>Filtry</h2>
-            <div class="filter-group">
-                <label for="typ-boiska">Typ boiska:</label>
-                <select id="typ-boiska">
-                    <option value="wszystkie">Wszystkie</option>
-                    <option value="kryte">Kryte</option>
-                    <option value="otwarte">Otwarte</option>
-                </select>
+        <div class="container">
+            <div class="filters">
+                <h2>Filtry</h2>
+                
+                <div class="filter-row">
+                    <div class="filter-group">
+                        <div class="filter-label">
+                            <i class="fa-solid fa-vector-square"></i>
+                            <label for="typ-boiska">Typ boiska:</label>
+                        </div>
+                        <select id="typ-boiska">
+                            <option value="wszystkie">Wszystkie</option>
+                            <option value="kryte">Kryte</option>
+                            <option value="otwarte">Otwarte</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <div class="filter-label">
+                            <i class="fa-solid fa-layer-group"></i>
+                            <label for="nawierzchnia">Nawierzchnia:</label>
+                        </div>
+                        <select id="nawierzchnia">
+                            <option value="wszystkie">Wszystkie</option>
+                            <option value="trawa">Trawa naturalna</option>
+                            <option value="sztuczna">Trawa sztuczna</option>
+                            <option value="orlik">Orlik</option>
+                            <option value="parkiet">Parkiet</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <div class="filter-label">
+                            <i class="fa-solid fa-location-dot"></i>
+                            <label for="dzielnica">Dzielnica:</label>
+                        </div>
+                        <select id="dzielnica">
+                            <option value="wszystkie">Wszystkie</option>
+                            <option value="Bemowo">Bemowo</option>
+                            <option value="Białołęka">Białołęka</option>
+                            <option value="Bielany">Bielany</option>
+                            <option value="Mokotów">Mokotów</option>
+                            <option value="Ochota">Ochota</option>
+                            <option value="Praga-Południe">Praga-Południe</option>
+                            <option value="Praga-Północ">Praga-Północ</option>
+                            <option value="Rembertów">Rembertów</option>
+                            <option value="Śródmieście">Śródmieście</option>
+                            <option value="Targówek">Targówek</option>
+                            <option value="Ursus">Ursus</option>
+                            <option value="Ursynow">Ursynów</option>
+                            <option value="Wawer">Wawer</option>
+                            <option value="Wesoła">Wesoła</option>
+                            <option value="Wilanów">Wilanów</option>
+                            <option value="Włochy">Włochy</option>
+                            <option value="Wola">Wola</option>
+                            <option value="Żoliborz">Żoliborz</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <div class="filter-label">
+                            <i class="fa-regular fa-clock"></i>
+                            <label for="dostepnosc">Dostępność:</label>
+                        </div>
+                        <select id="dostepnosc">
+                            <option value="wszystkie">Wszystkie</option>
+                            <option value="dostepne">Dostępne</option>
+                            <option value="niedostepne">Niedostępne</option>
+                        </select>
+                    </div>
+                </div>
             </div>
             
-            <div class="filter-group">
-                <label for="nawierzchnia">Nawierzchnia:</label>
-                <select id="nawierzchnia">
-                    <option value="wszystkie">Wszystkie</option>
-                    <option value="trawa">Trawa naturalna</option>
-                    <option value="sztuczna">Trawa sztuczna</option>
-                    <option value="orlik">Orlik</option>
-                    <option value="parkiet">Parkiet</option>
-                </select>
-            </div>
-            
-            <div class="filter-group">
-                <label for="dzielnica">Dzielnica:</label>
-                <select id="dzielnica">
-                    <option value="wszystkie">Wszystkie</option>
-                    <option value="Bemowo">Bemowo</option>
-                    <option value="Białołęka">Białołęka</option>
-                    <option value="Bielany">Bielany</option>
-                    <option value="Mokotów">Mokotów</option>
-                    <option value="Ochota">Ochota</option>
-                    <option value="Praga-Południe">Praga-Południe</option>
-                    <option value="Praga-Północ">Praga-Północ</option>
-                    <option value="Rembertów">Rembertów</option>
-                    <option value="Śródmieście">Śródmieście</option>
-                    <option value="Targówek">Targówek</option>
-                    <option value="Ursus">Ursus</option>
-                    <option value="Ursynow">Ursynów</option>
-                    <option value="Wawer">Wawer</option>
-                    <option value="Wesoła">Wesoła</option>
-                    <option value="Wilanów">Wilanów</option>
-                    <option value="Włochy">Włochy</option>
-                    <option value="Wola">Wola</option>
-                    <option value="Żoliborz">Żoliborz</option>
-                </select>
-            </div>
-            
-            <div class="filter-group">
-                <label for="dostepnosc">Dostępność:</label>
-                <select id="dostepnosc">
-                    <option value="wszystkie">Wszystkie</option>
-                    <option value="dostepne">Dostępne</option>
-                    <option value="niedostepne">Niedostępne</option>
-                </select>
-            </div>
+            <div id="lista-boisk" class="boiska-lista"></div>
         </div>
-        
-        <div id="lista-boisk" class="boiska-lista"></div>
     </div>
 
     <script>
-        // ===== KONFIGURACJA GOOGLE SHEETS =====
+        // ===== KONFIGURACJA GOOGLE SHEETS (BEZ ZMIAN) =====
         const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbyu1-DISHivBQmHbl2CIJjzBwxwBjuUqnLd_0UV9MmSM-iAsADbhUmTlb-fV_JNHfo71Q/exec';
 
+        // ===== LISTA BOISK Z DEFINICJĄ ZDJĘĆ =====
+        // Tutaj w polu 'zdjecie' wpisujesz ścieżkę do pliku w folderze img lub link z internetu
         const boiska = [
-            { id: 1, nazwa: 'Boisko Sportowa 1', typ: 'kryte', nawierzchnia: 'parkiet', dzielnica: 'Śródmieście', dostepne: true, zarezerwowane: [] },
-            { id: 2, nazwa: 'Orlik Mokotów', typ: 'otwarte', nawierzchnia: 'orlik', dzielnica: 'Mokotów', dostepne: true, zarezerwowane: [] },
-            { id: 3, nazwa: 'Arena Wola', typ: 'kryte', nawierzchnia: 'sztuczna', dzielnica: 'Wola', dostepne: true, zarezerwowane: [] },
-            { id: 4, nazwa: 'Stadion Praga', typ: 'otwarte', nawierzchnia: 'trawa', dzielnica: 'Praga-Południe', dostepne: true, zarezerwowane: [] },
-            { id: 5, nazwa: 'Hala Ursynów', typ: 'kryte', nawierzchnia: 'parkiet', dzielnica: 'Ursynow', dostepne: false, zarezerwowane: [] },
-            { id: 6, nazwa: 'Boisko Mokotów Park', typ: 'otwarte', nawierzchnia: 'sztuczna', dzielnica: 'Mokotów', dostepne: true, zarezerwowane: [] }
-            
+            { id: 1, nazwa: 'Boisko Sportowa 1', typ: 'kryte', nawierzchnia: 'parkiet', dzielnica: 'Śródmieście', dostepne: true, zdjecie: 'img/1.jpg', zarezerwowane: [] },
+            { id: 2, nazwa: 'Orlik Mokotów', typ: 'otwarte', nawierzchnia: 'orlik', dzielnica: 'Mokotów', dostepne: true, zdjecie: 'img/2.png', zarezerwowane: [] },
+            { id: 3, nazwa: 'Arena Wola', typ: 'kryte', nawierzchnia: 'sztuczna', dzielnica: 'Wola', dostepne: true, zdjecie: 'img/3.jpg.webp', zarezerwowane: [] },
+            { id: 4, nazwa: 'Stadion Praga', typ: 'otwarte', nawierzchnia: 'trawa', dzielnica: 'Praga-Południe', dostepne: true, zdjecie: 'img/4.jpg', zarezerwowane: [] },
+            { id: 5, nazwa: 'Hala Ursynów', typ: 'kryte', nawierzchnia: 'parkiet', dzielnica: 'Ursynow', dostepne: false, zdjecie: 'img/5.jpg', zarezerwowane: [] },
+            { id: 6, nazwa: 'Boisko Mokotów Park', typ: 'otwarte', nawierzchnia: 'sztuczna', dzielnica: 'Mokotów', dostepne: true, zdjecie: 'img/6.webp', zarezerwowane: [] },
+            { id: 7, nazwa: 'OSiR Bemowo', typ: 'kryte', nawierzchnia: 'parkiet', dzielnica: 'Bemowo', dostepne: true, zdjecie: 'img/7.jpeg', zarezerwowane: [] },
+            { id: 8, nazwa: 'Orlik Białołęka Strumykowa', typ: 'otwarte', nawierzchnia: 'orlik', dzielnica: 'Białołęka', dostepne: true, zdjecie: 'img/8.jpg', zarezerwowane: [] },
+            { id: 9, nazwa: 'Hutnik Warszawa', typ: 'otwarte', nawierzchnia: 'trawa', dzielnica: 'Bielany', dostepne: true, zdjecie: 'img/9.jpg', zarezerwowane: [] },
+            { id: 10, nazwa: 'Syrenka Park Olszyna', typ: 'otwarte', nawierzchnia: 'sztuczna', dzielnica: 'Bielany', dostepne: true, zdjecie: 'img/10.jpg', zarezerwowane: [] },
+            { id: 11, nazwa: 'Hala OSiR Ochota', typ: 'kryte', nawierzchnia: 'parkiet', dzielnica: 'Ochota', dostepne: true, zdjecie: 'img/11.jpeg', zarezerwowane: [] },
+            { id: 12, nazwa: 'DOSiR Praga Północ', typ: 'kryte', nawierzchnia: 'parkiet', dzielnica: 'Praga-Północ', dostepne: true, zdjecie: 'img/12.jpg', zarezerwowane: [] },
+            { id: 13, nazwa: 'Stadion Rembertów', typ: 'otwarte', nawierzchnia: 'trawa', dzielnica: 'Rembertów', dostepne: true, zdjecie: 'img/13.jpg', zarezerwowane: [] },
+            { id: 14, nazwa: 'Orlik Bródno', typ: 'otwarte', nawierzchnia: 'orlik', dzielnica: 'Targówek', dostepne: true, zdjecie: 'img/14.jpg', zarezerwowane: [] },
+            { id: 15, nazwa: 'OSiR Ursus', typ: 'otwarte', nawierzchnia: 'sztuczna', dzielnica: 'Ursus', dostepne: true, zdjecie: 'img/15.jpeg', zarezerwowane: [] },
+            { id: 16, nazwa: 'Hala Hawajska', typ: 'kryte', nawierzchnia: 'parkiet', dzielnica: 'Ursynow', dostepne: true, zdjecie: 'img/16.jpg', zarezerwowane: [] },
+            { id: 17, nazwa: 'OSiR Wawer', typ: 'kryte', nawierzchnia: 'sztuczna', dzielnica: 'Wawer', dostepne: true, zdjecie: 'img/17.jpg', zarezerwowane: [] },
+            { id: 18, nazwa: 'Orlik Wilanów Królewski', typ: 'otwarte', nawierzchnia: 'orlik', dzielnica: 'Wilanów', dostepne: true, zdjecie: 'img/18.jpg', zarezerwowane: [] },
+            { id: 19, nazwa: 'Stadion OSiR Włochy', typ: 'otwarte', nawierzchnia: 'trawa', dzielnica: 'Włochy', dostepne: true, zdjecie: 'img/19.jpg', zarezerwowane: [] },
+            { id: 20, nazwa: 'Hala Sportowa Żoliborz', typ: 'kryte', nawierzchnia: 'parkiet', dzielnica: 'Żoliborz', dostepne: true, zdjecie: 'img/20.webp', zarezerwowane: [] }
         ];
 
-        // ===== FUNKCJE GOOGLE SHEETS =====
+        // ===== FUNKCJE GOOGLE SHEETS (BEZ ZMIAN) =====
         async function pobierzRezerwacjeZSheets() {
             try {
                 const response = await fetch(GOOGLE_SHEETS_URL);
                 const data = await response.json();
-                
                 boiska.forEach(b => b.zarezerwowane = []);
-                
                 data.forEach(rez => {
                     const boisko = boiska.find(b => b.id === parseInt(rez.idBoiska));
                     if (boisko) {
@@ -109,7 +146,6 @@
                         });
                     }
                 });
-                
                 console.log('Rezerwacje załadowane:', data.length);
             } catch (error) {
                 console.error('Błąd pobierania rezerwacji:', error);
@@ -168,6 +204,7 @@
             return godziny;
         }
 
+        // ===== ZMODYFIKOWANA FUNKCJA RENDERUJĄCA =====
         function renderBoiska() {
             const typFilter = document.getElementById('typ-boiska').value;
             const nawierzchniaFilter = document.getElementById('nawierzchnia').value;
@@ -203,7 +240,7 @@
             listaBoisk.innerHTML = '';
             
             if (filtrowane.length === 0) {
-                listaBoisk.innerHTML = '<p class="brak-wynikow">Brak boisk spełniających wybrane kryteria</p>';
+                listaBoisk.innerHTML = '<div class="brak-wynikow"><i class="fa-regular fa-face-frown"></i><p>Brak boisk spełniających kryteria</p></div>';
                 return;
             }
             
@@ -220,50 +257,75 @@
                     const dataSprawdzana = new Date(dzisiaj);
                     dataSprawdzana.setDate(dataSprawdzana.getDate() + i);
                     const dataStr = dataSprawdzana.toISOString().split('T')[0];
-                    
                     if (sprawdzDostepnosc(boisko, dataStr)) {
                         maWolneTerminy = true;
                         break;
                     }
                 }
+
+                // ===== TERAZ KOD POBIERA ZDJĘCIE WPROST Z TABLICY =====
+                const imgUrl = boisko.zdjecie;
+                const placeholder = 'https://placehold.co/400?text=Brak+zdjęcia';
                 
+                // Nowa struktura HTML karty
                 boiskoCard.innerHTML = `
-                    <h3>${boisko.nazwa}</h3>
-                    <div class="boisko-info">
-                        <p><strong>Typ:</strong> ${boisko.typ}</p>
-                        <p><strong>Nawierzchnia:</strong> ${boisko.nawierzchnia}</p>
-                        <p><strong>Dzielnica:</strong> ${boisko.dzielnica}</p>
-                        <p id="status-boiska-${boisko.id}" class="${maWolneTerminy ? 'dostepne' : 'niedostepne'}">
-                            <strong>Status:</strong> ${maWolneTerminy ? 'Dostępne' : 'Brak wolnych terminów'}
-                        </p>
-                    </div>
-                    <div class="rezerwacja-section">
-                        <label for="data-${boisko.id}">Wybierz datę:</label>
-                        <input type="date" id="data-${boisko.id}" class="data-input" min="${new Date().toISOString().split('T')[0]}">
-                        
-                        <div id="status-dnia-${boisko.id}" class="status-dnia"></div>
-                        
-                        <label for="godzina-od-${boisko.id}">Godzina rozpoczęcia:</label>
-                        <select id="godzina-od-${boisko.id}" class="godzina-select godzina-od" disabled>
-                            <option value="">-- Najpierw wybierz datę --</option>
-                            ${godziny.map(g => `<option value="${g}">${g}</option>`).join('')}
-                        </select>
-                        
-                        <label for="godzina-do-${boisko.id}">Godzina zakończenia:</label>
-                        <select id="godzina-do-${boisko.id}" class="godzina-select godzina-do" disabled>
-                            <option value="">-- Najpierw wybierz datę --</option>
-                            ${godziny.map(g => `<option value="${g}">${g}</option>`).join('')}
-                        </select>
-                        
-                        <button class="btn-rezerwuj" data-id="${boisko.id}" disabled>Zarezerwuj</button>
-                        <div id="form-${boisko.id}" class="kontakt-form hidden">
-                            <input type="email" placeholder="Adres email" id="email-${boisko.id}" required>
-                            <small>Podaj poprawny adres email (np. email@domena.pl)</small>
-                            <input type="tel" placeholder="Numer telefonu (9 cyfr)" id="sms-${boisko.id}" required maxlength="9">
-                            <small>Podaj 9-cyfrowy numer telefonu</small>
-                            <button class="btn-potwierdz" data-id="${boisko.id}">Potwierdź rezerwację</button>
+                    <div class="card-header">
+                        <div class="card-title-section">
+                            <h3>${boisko.nazwa}</h3>
+                            <div class="card-specs">
+                                <span><strong>Typ:</strong> ${boisko.typ}</span>
+                                <span><strong>Nawierzchnia:</strong> ${boisko.nawierzchnia}</span>
+                                <span><strong>Dzielnica:</strong> ${boisko.dzielnica}</span>
+                            </div>
+                            <div id="status-boiska-${boisko.id}" class="status-pill ${maWolneTerminy ? 'status-dostepne' : 'status-niedostepne'}">
+                                ${maWolneTerminy ? 'Dostępne' : 'Brak wolnych terminów'}
+                            </div>
+                        </div>
+                        <div class="card-image">
+                            <img src="${imgUrl}" onerror="this.onerror=null; this.src='${placeholder}';" alt="Zdjęcie boiska">
                         </div>
                     </div>
+                    
+                    <div class="card-actions">
+                        <div class="input-group">
+                            <label for="data-${boisko.id}">Wybierz datę:</label>
+                            <div class="input-with-icon">
+                                <i class="fa-regular fa-calendar"></i>
+                                <input type="date" id="data-${boisko.id}" class="data-input" min="${new Date().toISOString().split('T')[0]}">
+                            </div>
+                        </div>
+                        
+                        <div id="status-dnia-${boisko.id}" class="status-dnia-container"></div>
+                        
+                        <div class="time-inputs">
+                            <div class="input-group">
+                                <label>Rozpoczęcie:</label>
+                                <select id="godzina-od-${boisko.id}" class="godzina-select godzina-od" disabled>
+                                    <option value="">00:00</option>
+                                    ${godziny.map(g => `<option value="${g}">${g}</option>`).join('')}
+                                </select>
+                            </div>
+                            <div class="input-group">
+                                <label>Zakończenie:</label>
+                                <select id="godzina-do-${boisko.id}" class="godzina-select godzina-do" disabled>
+                                    <option value="">00:00</option>
+                                    ${godziny.map(g => `<option value="${g}">${g}</option>`).join('')}
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <button class="btn-rezerwuj" data-id="${boisko.id}" disabled>Zarezerwuj termin</button>
+                    </div>
+
+                    <div id="form-${boisko.id}" class="kontakt-form hidden">
+                        <h4>Potwierdzenie rezerwacji</h4>
+                        <div class="form-inputs">
+                            <input type="email" placeholder="Adres email" id="email-${boisko.id}" required>
+                            <input type="tel" placeholder="Numer telefonu (9 cyfr)" id="sms-${boisko.id}" required maxlength="9">
+                        </div>
+                        <button class="btn-potwierdz" data-id="${boisko.id}">Potwierdź rezerwację</button>
+                    </div>
+                    
                     <div id="zarezerwowane-${boisko.id}" class="zarezerwowane-daty"></div>
                 `;
                 listaBoisk.appendChild(boiskoCard);
@@ -280,29 +342,27 @@
             attachEventListeners();
         }
 
+        // ===== POZOSTAŁE FUNKCJE POMOCNICZE (BEZ ZMIAN) =====
+
         function renderZarezerwowane(boisko, wybranaData = null) {
-    const container = document.getElementById(`zarezerwowane-${boisko.id}`);
-    
-    if (!wybranaData) {
-        container.innerHTML = '';
-        return;
-    }
-    
-    const rezerwacjeNaDzien = boisko.zarezerwowane.filter(rez => rez.data === wybranaData);
-    
-    if (rezerwacjeNaDzien.length > 0) {
-        rezerwacjeNaDzien.sort((a, b) => {
-            const [hA, mA] = a.godzinaOd.split(':').map(Number);
-            const [hB, mB] = b.godzinaOd.split(':').map(Number);
-            return (hA * 60 + mA) - (hB * 60 + mB);
-        });
-        
-        container.innerHTML = '<h4>Zajęte godziny w wybranym dniu:</h4>' + 
-            rezerwacjeNaDzien.map(rez => `<span class="data-zarezerwowana">${rez.godzinaOd} - ${rez.godzinaDo}</span>`).join('');
-    } else {
-        container.innerHTML = '<p class="brak-rezerwacji">Brak rezerwacji w tym dniu - wszystkie godziny dostępne!</p>';
-    }
-}
+            const container = document.getElementById(`zarezerwowane-${boisko.id}`);
+            if (!wybranaData) {
+                container.innerHTML = '';
+                return;
+            }
+            const rezerwacjeNaDzien = boisko.zarezerwowane.filter(rez => rez.data === wybranaData);
+            if (rezerwacjeNaDzien.length > 0) {
+                rezerwacjeNaDzien.sort((a, b) => {
+                    const [hA, mA] = a.godzinaOd.split(':').map(Number);
+                    const [hB, mB] = b.godzinaOd.split(':').map(Number);
+                    return (hA * 60 + mA) - (hB * 60 + mB);
+                });
+                container.innerHTML = '<div class="busy-times-label">Zajęte godziny:</div><div class="busy-tags">' + 
+                    rezerwacjeNaDzien.map(rez => `<span class="tag-zajete">${rez.godzinaOd} - ${rez.godzinaDo}</span>`).join('') + '</div>';
+            } else {
+                container.innerHTML = '<p class="brak-rezerwacji"><i class="fa-solid fa-check"></i> Wszystkie godziny dostępne</p>';
+            }
+        }
 
         function walidujEmail(email) {
             const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -314,8 +374,6 @@
             return regex.test(telefon);
         }
         
-        
-
         function aktualizujStatusDnia(boiskoId, data) {
             const boisko = boiska.find(b => b.id === parseInt(boiskoId));
             const statusDiv = document.getElementById(`status-dnia-${boiskoId}`);
@@ -326,7 +384,7 @@
             const czyDostepne = sprawdzDostepnosc(boisko, data);
             
             if (czyDostepne) {
-                statusDiv.innerHTML = '<p class="dostepne"><strong>✓ Boisko dostępne w tym dniu</strong></p>';
+                statusDiv.innerHTML = '<p class="status-msg dostepne"><i class="fa-solid fa-check-circle"></i> Dostępne w tym dniu</p>';
                 godzinaOdSelect.disabled = false;
                 godzinaDoSelect.disabled = false;
                 btnRezerwuj.disabled = false;
@@ -337,67 +395,58 @@
                     if (option.value) {
                         const [hOpcja, mOpcja] = option.value.split(':').map(Number);
                         const minutyOpcja = hOpcja * 60 + mOpcja;
-                        
                         let jestZarezerwowana = false;
                         for (let rez of rezerwacjeNaDzien) {
                             const [hOd, mOd] = rez.godzinaOd.split(':').map(Number);
                             const [hDo, mDo] = rez.godzinaDo.split(':').map(Number);
                             const startRez = hOd * 60 + mOd;
                             const koniecRez = hDo * 60 + mDo;
-                            
                             if (minutyOpcja >= startRez && minutyOpcja < koniecRez) {
                                 jestZarezerwowana = true;
                                 break;
                             }
                         }
-                        
                         if (jestZarezerwowana) {
                             option.disabled = true;
-                            option.style.color = '#ccc';
+                            option.classList.add('option-disabled');
                         } else {
                             option.disabled = false;
-                            option.style.color = '';
+                            option.classList.remove('option-disabled');
                         }
                     }
                 });
-                
             } else {
-                statusDiv.innerHTML = '<p class="niedostepne"><strong>✗ Brak wolnych terminów w tym dniu</strong></p>';
+                statusDiv.innerHTML = '<p class="status-msg niedostepne"><i class="fa-solid fa-circle-xmark"></i> Brak terminów</p>';
                 godzinaOdSelect.disabled = true;
                 godzinaDoSelect.disabled = true;
                 godzinaOdSelect.value = '';
                 godzinaDoSelect.value = '';
                 btnRezerwuj.disabled = true;
             }
-            
             aktualizujStatusBoiska(boiskoId);
         }
         
         function aktualizujStatusBoiska(boiskoId) {
             const boisko = boiska.find(b => b.id === parseInt(boiskoId));
             const statusElement = document.querySelector(`#status-boiska-${boiskoId}`);
-            
             let maWolneTerminy = false;
             const dzisiaj = new Date();
-            
             for (let i = 0; i < 7; i++) {
                 const dataSprawdzana = new Date(dzisiaj);
                 dataSprawdzana.setDate(dataSprawdzana.getDate() + i);
                 const dataStr = dataSprawdzana.toISOString().split('T')[0];
-                
                 if (sprawdzDostepnosc(boisko, dataStr)) {
                     maWolneTerminy = true;
                     break;
                 }
             }
-            
             if (statusElement) {
                 if (maWolneTerminy) {
-                    statusElement.className = 'dostepne';
-                    statusElement.innerHTML = '<strong>Status:</strong> Dostępne';
+                    statusElement.className = 'status-pill status-dostepne';
+                    statusElement.innerText = 'Dostępne';
                 } else {
-                    statusElement.className = 'niedostepne';
-                    statusElement.innerHTML = '<strong>Status:</strong> Brak wolnych terminów';
+                    statusElement.className = 'status-pill status-niedostepne';
+                    statusElement.innerText = 'Brak wolnych terminów';
                 }
             }
         }
@@ -415,18 +464,14 @@
                         alert('Proszę wybrać datę, godzinę rozpoczęcia i zakończenia!');
                         return;
                     }
-                    
                     const [godzinaOdH, godzinaOdM] = godzinaOdSelect.value.split(':').map(Number);
                     const [godzinaDoH, godzinaDoM] = godzinaDoSelect.value.split(':').map(Number);
-                    const minutyOd = godzinaOdH * 60 + godzinaOdM;
-                    const minutyDo = godzinaDoH * 60 + godzinaDoM;
-                    
-                    if (minutyDo <= minutyOd) {
+                    if ((godzinaDoH * 60 + godzinaDoM) <= (godzinaOdH * 60 + godzinaOdM)) {
                         alert('Godzina zakończenia musi być późniejsza niż godzina rozpoczęcia!');
                         return;
                     }
-                    
                     form.classList.remove('hidden');
+                    form.scrollIntoView({ behavior: 'smooth' });
                 });
             });
             
@@ -443,7 +488,6 @@
                         alert('Podaj poprawny adres email (np. email@domena.pl)');
                         return;
                     }
-                    
                     if (!walidujTelefon(smsInput.value)) {
                         alert('Numer telefonu musi składać się z dokładnie 9 cyfr');
                         return;
@@ -451,12 +495,12 @@
                     
                     if (emailInput.value && smsInput.value && dataInput.value && godzinaOdSelect.value && godzinaDoSelect.value) {
                         const boisko = boiska.find(b => b.id === id);
-                        
                         const czyZarezerwowany = boisko.zarezerwowane.some(
                             rez => rez.data === dataInput.value && rez.godzinaOd === godzinaOdSelect.value && rez.godzinaDo === godzinaDoSelect.value
                         );
                         
                         if (!czyZarezerwowany) {
+                            const originalText = btn.innerText;
                             btn.innerText = "Zapisywanie...";
                             btn.disabled = true;
 
@@ -518,41 +562,30 @@
                     if (wybranaGodzina && dataInput.value) {
                         const [h, m] = wybranaGodzina.split(':').map(Number);
                         const wybraneMinuty = h * 60 + m;
-                        
                         const rezerwacjeNaDzien = boisko.zarezerwowane.filter(rez => rez.data === dataInput.value);
-                        
                         let najblizszaRezerwacja = null;
                         for (let rez of rezerwacjeNaDzien) {
                             const [hOd, mOd] = rez.godzinaOd.split(':').map(Number);
                             const startRez = hOd * 60 + mOd;
-                            
                             if (startRez > wybraneMinuty) {
                                 if (!najblizszaRezerwacja || startRez < najblizszaRezerwacja) {
                                     najblizszaRezerwacja = startRez;
                                 }
                             }
                         }
-                        
                         Array.from(selectDo.options).forEach(option => {
                             if (option.value) {
                                 const [hOpcja, mOpcja] = option.value.split(':').map(Number);
                                 const minutyOpcja = hOpcja * 60 + mOpcja;
-                                
                                 if (minutyOpcja <= wybraneMinuty) {
                                     option.disabled = true;
-                                    option.style.color = '#ccc';
-                                } 
-                                else if (najblizszaRezerwacja && minutyOpcja > najblizszaRezerwacja) {
+                                } else if (najblizszaRezerwacja && minutyOpcja > najblizszaRezerwacja) {
                                     option.disabled = true;
-                                    option.style.color = '#ccc';
-                                }
-                                else {
+                                } else {
                                     option.disabled = false;
-                                    option.style.color = '';
                                 }
                             }
                         });
-                        
                         if (selectDo.value) {
                             const [hDo, mDo] = selectDo.value.split(':').map(Number);
                             const minutyDo = hDo * 60 + mDo;
@@ -567,9 +600,9 @@
             document.querySelectorAll('input[type="email"]').forEach(input => {
                 input.addEventListener('blur', function() {
                     if (this.value && !walidujEmail(this.value)) {
-                        this.style.borderColor = '#dc3545';
+                        this.style.borderColor = '#ef4444';
                     } else {
-                        this.style.borderColor = '#28a745';
+                        this.style.borderColor = '#e2e8f0';
                     }
                 });
             });
@@ -577,28 +610,23 @@
             document.querySelectorAll('input[type="tel"]').forEach(input => {
                 input.addEventListener('input', function() {
                     this.value = this.value.replace(/[^0-9]/g, '');
-                    if (this.value.length > 9) {
-                        this.value = this.value.slice(0, 9);
-                    }
+                    if (this.value.length > 9) this.value = this.value.slice(0, 9);
                 });
-                
                 input.addEventListener('blur', function() {
                     if (this.value && !walidujTelefon(this.value)) {
-                        this.style.borderColor = '#dc3545';
+                        this.style.borderColor = '#ef4444';
                     } else if (this.value) {
-                        this.style.borderColor = '#28a745';
+                        this.style.borderColor = '#e2e8f0';
                     }
                 });
             });
         }
 
-        // Event listenery dla filtrów
         document.getElementById('typ-boiska').addEventListener('change', renderBoiska);
         document.getElementById('nawierzchnia').addEventListener('change', renderBoiska);
         document.getElementById('dzielnica').addEventListener('change', renderBoiska);
         document.getElementById('dostepnosc').addEventListener('change', renderBoiska);
 
-        // Inicjalizacja - pobierz rezerwacje i wyrenderuj boiska
         (async function() {
             await pobierzRezerwacjeZSheets();
             renderBoiska();
