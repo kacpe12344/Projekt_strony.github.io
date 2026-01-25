@@ -102,11 +102,11 @@
     </div>
 
     <script>
-        // ===== KONFIGURACJA GOOGLE SHEETS (BEZ ZMIAN) =====
+        // google sheets(nasza baza)
         const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbyu1-DISHivBQmHbl2CIJjzBwxwBjuUqnLd_0UV9MmSM-iAsADbhUmTlb-fV_JNHfo71Q/exec';
 
-        // ===== LISTA BOISK Z DEFINICJĄ ZDJĘĆ =====
-        // Tutaj w polu 'zdjecie' wpisujesz ścieżkę do pliku w folderze img lub link z internetu
+        // lista boisk
+        
         const boiska = [
             { id: 1, nazwa: 'Boisko Sportowa 1', typ: 'kryte', nawierzchnia: 'parkiet', dzielnica: 'Śródmieście', dostepne: true, zdjecie: 'img/1.jpg', zarezerwowane: [] },
             { id: 2, nazwa: 'Orlik Mokotów', typ: 'otwarte', nawierzchnia: 'orlik', dzielnica: 'Mokotów', dostepne: true, zdjecie: 'img/2.png', zarezerwowane: [] },
@@ -130,7 +130,7 @@
             { id: 20, nazwa: 'Hala Sportowa Żoliborz', typ: 'kryte', nawierzchnia: 'parkiet', dzielnica: 'Żoliborz', dostepne: true, zdjecie: 'img/20.webp', zarezerwowane: [] }
         ];
 
-        // ===== FUNKCJE GOOGLE SHEETS (BEZ ZMIAN) =====
+        //funkcje do google sheets
         async function pobierzRezerwacjeZSheets() {
             try {
                 const response = await fetch(GOOGLE_SHEETS_URL);
@@ -204,7 +204,7 @@
             return godziny;
         }
 
-        // ===== ZMODYFIKOWANA FUNKCJA RENDERUJĄCA =====
+        //funckja renderująca
         function renderBoiska() {
             const typFilter = document.getElementById('typ-boiska').value;
             const nawierzchniaFilter = document.getElementById('nawierzchnia').value;
@@ -263,11 +263,11 @@
                     }
                 }
 
-                // ===== TERAZ KOD POBIERA ZDJĘCIE WPROST Z TABLICY =====
+                //pobranie zdjęcia z tablicy
                 const imgUrl = boisko.zdjecie;
                 const placeholder = 'https://placehold.co/400?text=Brak+zdjęcia';
                 
-                // Nowa struktura HTML karty
+                //struktura html karty
                 boiskoCard.innerHTML = `
                     <div class="card-header">
                         <div class="card-title-section">
@@ -329,20 +329,19 @@
                     <div id="zarezerwowane-${boisko.id}" class="zarezerwowane-daty"></div>
                 `;
                 listaBoisk.appendChild(boiskoCard);
-                
-                renderZarezerwowane(boisko);
-                
+
+
                 const dataInput = document.getElementById(`data-${boisko.id}`);
                 dataInput.addEventListener('change', function() {
                     aktualizujStatusDnia(boisko.id, this.value);
                     renderZarezerwowane(boisko, this.value);
-                });
+});
             });
             
             attachEventListeners();
         }
 
-        // ===== POZOSTAŁE FUNKCJE POMOCNICZE (BEZ ZMIAN) =====
+        //funkcje pomocnicze 
 
         function renderZarezerwowane(boisko, wybranaData = null) {
             const container = document.getElementById(`zarezerwowane-${boisko.id}`);
